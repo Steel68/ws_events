@@ -257,18 +257,13 @@ QUnit.test(
 
 QUnit.test(
 
-    "The div `mousereporter` contains a paragraph `report`.  When the mouse is anywhere over `mousereporter`, the `report` paragraph should be updated to include the position of the mouse within the screen, thus `x: 000 y: 000`.  Write a function `reportAttacher` that associates the mousemove event with a `reportUpdater` function.  Also write the `reportUpdater` function (you may wish to base this on `snitchUpdater`) which receives a single event object parameter and used the data in this object to update the `report` element.  Hint: there are screenX and screenY properties in the event object.",
+    "The div `mousereporter` contains a paragraph `report`. When the mouse is anywhere over `mousereporter`, the `report` paragraph should be updated to include the position of the mouse within the screen, like this `x: 000 y: 000`. When the mouse leaves `mousereporter`, the text should be removed. Write a function `reportAttacher` that associates the mousemove and mouseout events with another functions. Also write these other functions (you may wish to base these on `snitchUpdater`) which receives a single event object parameter and used the data in this object to update the `report` element.  Hint: there are screenX and screenY properties in the event object.",
 
     function(assert) {
 
         assert.ok(
             typeof reportAttacher === "function",
             "Create a `reportAttacher` function."
-        );
-
-        assert.ok(
-            typeof reportUpdater === "function",
-            "Create a `reportUpdater` function."
         );
 
         reportAttacher();
@@ -287,6 +282,14 @@ QUnit.test(
             window.report.textContent,
             "x: 11 y: 21",
             "After a `mousemove` event, the `report` text should reflect mouse position x11y21."
+        );
+
+        window.mousereporter.dispatchEvent( new MouseEvent("mouseout") );
+
+        assert.equal(
+            window.report.textContent,
+            "",
+            "After a `mouseout` event, the `report` text should be blank."
         );
 
         window.mousereporter.parentElement.classList.add("done");
